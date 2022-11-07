@@ -100,6 +100,26 @@ set (gtest_sources
   network/NetworkManager_TEST.cc
 )
 
+add_library(Simulation
+  Simulation.cc
+  Clock.cc
+  SimulationBuilder.cc)
+
+target_link_libraries(Simulation
+  PUBLIC
+  gz-common${GZ_COMMON_VER}::gz-common${GZ_COMMON_VER}
+  sdformat${SDF_VER}::sdformat${SDF_VER}
+  gz-msgs${GZ_MSGS_VER}::gz-msgs${GZ_MSGS_VER}
+  gz-plugin${GZ_PLUGIN_VER}::core
+)
+
+target_include_directories(Simulation PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_executable(SimulationBuilder_TEST
+  SimulationBuilder_TEST.cc)
+
+target_link_libraries(SimulationBuilder_TEST Simulation)
+
 # gz_TEST and ModelCommandAPI_TEST are not supported with multi config
 # CMake generators, see also cmd/CMakeLists.txt
 get_property(GENERATOR_IS_MULTI_CONFIG GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
